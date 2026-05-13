@@ -1,0 +1,104 @@
+### ============================================================
+### Notes App — API Testing (VS Code REST Client)
+### ============================================================
+
+@base = http://localhost:3000/api
+
+
+### ── FOLDERS ────────────────────────────────────────────────
+
+### GET semua folder
+GET {{base}}/folders
+Content-Type: application/json
+
+###
+
+### POST buat folder baru
+POST {{base}}/folders
+Content-Type: application/json
+
+{
+  "nama": "Kuliah"
+}
+
+###
+
+### PUT edit folder (ganti 1 dengan id folder)
+PUT {{base}}/folders/3
+Content-Type: application/json
+
+{
+  "nama": "Kuliah 2025"
+}
+
+###
+
+### DELETE folder (ganti 1 dengan id folder)
+DELETE {{base}}/folders/3
+Content-Type: application/json
+
+
+### ── NOTES ───────────────────────────────────────────────────
+
+### GET semua notes
+GET {{base}}/notes
+Content-Type: application/json
+
+###
+
+### GET notes by folder
+GET {{base}}/notes?folder_id=4
+Content-Type: application/json
+
+###
+
+### GET notes dengan search
+GET {{base}}/notes?search=algoritma
+Content-Type: application/json
+
+###
+
+### GET satu note (ganti 1 dengan id note)
+GET {{base}}/notes/1
+Content-Type: application/json
+
+###
+
+### POST buat note baru
+POST {{base}}/notes
+Content-Type: application/json
+
+{
+  "judul": "Catatan Baru",
+  "isi": "Isi catatan di sini...",
+  "folder_id": 5
+}
+
+###
+
+### POST buat note tanpa folder
+POST {{base}}/notes
+Content-Type: application/json
+
+{
+  "judul": "Catatan Tanpa Folder",
+  "isi": "Ini catatan yang tidak masuk folder manapun."
+}
+
+###
+
+### PUT edit note (ganti 1 dengan id note)
+PUT {{base}}/notes/12
+Content-Type: application/json
+
+{
+  "judul": "Catatan Diupdate",
+  "isi": "Isi yang sudah diedit.",
+  "folder_id": null
+}
+
+###
+
+### DELETE note (ganti 1 dengan id note)
+DELETE {{base}}/notes/12
+Content-Type: application/json
