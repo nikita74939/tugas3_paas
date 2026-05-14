@@ -12,10 +12,8 @@ const allowedOrigins = [
   'https://nikita-fe-dot-praktikum-tcc01.uc.r.appspot.com'
 ];
 
-app.use(cors({
+const corsOptions = {
   origin: function (origin, callback) {
-    // Izinkan request dari frontend App Engine
-    // dan izinkan juga request tanpa origin seperti Postman / curl
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
@@ -25,24 +23,37 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
-}));
-
-app.options('*', cors());
+};
 
 // ── Middleware ────────────────────────────────────────────
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../frontend')));
 
 // ── API Routes ────────────────────────────────────────────
 app.use('/api', routes);
 
+// ── Health Check untuk Cloud Run ──────────────────────────
+app.get('/', (req, res) => {
+  res.status(200).send('Backend Notes API is running 🚀');
+});
+
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    status: 'ok',
+    message: 'Server is healthy'
+  });
+});
+
 // ── SPA Fallback ──────────────────────────────────────────
+// Kalau backend kamu hanya API, bagian ini boleh dihapus.
+// Kalau tetap dipakai, ini aman untuk Express v5.
 app.get('/{*splat}', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
 
-// ── Init DB Tables & Start ────────────────────────────────
-async function init() {
+// ── Init DB Tables ────────────────────────────────────────
+async function initDB() {
   await pool.execute(`
     CREATE TABLE IF NOT EXISTS folders (
       id             INT AUTO_INCREMENT PRIMARY KEY,
@@ -64,13 +75,13 @@ async function init() {
   `);
 
   console.log('✅ Database connected & tables ready');
-
-  app.listen(PORT, () => {
-    console.log(`🚀 Server berjalan di port ${PORT}`);
-  });
 }
 
-init().catch(err => {
-  console.error('❌ Gagal connect ke database:', err.message);
-  process.exit(1);
+// ── Start Server DULU, baru init DB ───────────────────────
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Server berjalan di port ${PORT}`);
+
+  initDB().catch(err => {
+    console.error('❌ Gagal init database:', err.message);
+  });
 });
