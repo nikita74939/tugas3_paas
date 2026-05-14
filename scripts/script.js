@@ -1,5 +1,5 @@
 // ── CONFIG ───────────────────────────────────────────────
-const API = 'http://localhost:3000/api';
+const API = 'https://be-rest-255520032221.us-central1.run.app/api';
 
 // ── STATE ────────────────────────────────────────────────
 let folders = [];

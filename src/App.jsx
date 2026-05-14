@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-const API = 'http://localhost:3000/api';
+const API = 'https://be-rest-255520032221.us-central1.run.app/api';
 
 function FolderIcon({ id }) {
   const colors = ['#F7618E', '#9B4D6F', '#E8366A', '#C46A8A', '#A0395F'];
