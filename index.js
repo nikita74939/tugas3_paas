@@ -5,7 +5,7 @@ const pool    = require('./config/Database');
 const routes  = require('./routes/NoteRoutes');
 
 const app  = express();
-const PORT = 3000;
+const PORT = 5000;
 
 // ── Middleware ────────────────────────────────────────────
 app.use(cors());
