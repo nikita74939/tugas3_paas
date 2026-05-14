@@ -1,0 +1,11 @@
+runtime: nodejs20
+service: nikita-fe
+
+handlers:
+  - url: /(.*\.(js|css|png|jpg|jpeg|gif|ico|svg|webp|json|txt|map))$
+    static_files: dist/\1
+    upload: dist/.*\.(js|css|png|jpg|jpeg|gif|ico|svg|webp|json|txt|map)$
+
+  - url: /.*
+    static_files: dist/index.html
+    upload: dist/index.html

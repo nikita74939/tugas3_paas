@@ -1,0 +1,17 @@
+steps:
+  - name: "node:20"
+    entrypoint: "npm"
+    args: ["install"]
+
+  - name: "node:20"
+    entrypoint: "npm"
+    args: ["run", "build"]
+
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: "gcloud"
+    args: ["app", "deploy", "app.yaml", "--quiet"]
+
+timeout: "1600s"
+
+options:
+  logging: CLOUD_LOGGING_ONLY
